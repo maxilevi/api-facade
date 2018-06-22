@@ -1,12 +1,18 @@
 using System;
 using System.Text;
 
-namespace ApiFacade 
+namespace ApiFacade.Builder
 {
     public class FacadeStringBuilder
     {
         private readonly StringBuilder _builder;
         private readonly StringBuilder _indentationBuilder;
+
+        public FacadeStringBuilder()
+        {
+            _builder = new StringBuilder();
+            _indentationBuilder = new StringBuilder();
+        }
 
         public void Append(string Text)
         {
@@ -28,7 +34,12 @@ namespace ApiFacade
             
             return _indentationBuilder.ToString();
         }
-        
+
+        public override string ToString()
+        {
+            return _builder.ToString();
+        }
+
         public int IndentationLevel { get; set; }
     }
 }
