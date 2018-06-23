@@ -18,6 +18,7 @@ namespace ApiFacade.Parser
         public List<string[]> ClassModifers { get; }
         public List<FacadeMethod> Methods { get; }
         public List<FacadeMethod> Constructors { get; }
+        public bool IsInterface { get; private set; }
 
         public FacadeClassWalker()
         {
@@ -27,6 +28,12 @@ namespace ApiFacade.Parser
             Usings = new List<string>();
             Methods = new List<FacadeMethod>();
             Constructors = new List<FacadeMethod>();
+        }
+
+        public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
+        {
+            base.VisitInterfaceDeclaration(node);
+            IsInterface = true;
         }
 
         public override void VisitConstructorDeclaration(ConstructorDeclarationSyntax Node)

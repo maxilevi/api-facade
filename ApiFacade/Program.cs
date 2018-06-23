@@ -20,7 +20,7 @@ namespace ApiFacade
         public static void Main(string[] Args)
         {
             var apiPath = Path.GetFullPath("api.json");
-            var apiFolder = Path.GetDirectoryName(Path.GetFullPath("api.json"));
+            var apiFolder = Path.GetDirectoryName(apiPath);
             var configuration = Configuration.Load(apiPath);
             if(configuration == null) throw new ArgumentException("Configuration file is invalid.");
 
@@ -43,8 +43,12 @@ namespace ApiFacade
                         ? FacadeClass.Build(File.ReadAllText(files[k])) 
                         : FacadeClass.Build(File.ReadAllText(files[k]), any);
 
+                    if(facadeClass == null) continue;
+
                     var writer = (FacadeClassWriter) Activator.CreateInstance(ClassWriters[facadeClass.Type], facadeClass);
-                    File.WriteAllText($"{apiFolder}/{FacadeClass.Namespace}.{Path.GetFileName(files[k])}", writer.Build());
+                    var newFolders = string.Join("/", FacadeClass.Namespace.Split('.').Where(S => S != Path.GetFileNameWithoutExtension(apiFolder)));
+                    Directory.CreateDirectory($"{apiFolder}/{newFolders}");
+                    File.WriteAllText($"{apiFolder}/{newFolders}/{Path.GetFileName(files[k])}", writer.Build());
                 }
             }
         }

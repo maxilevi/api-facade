@@ -28,6 +28,7 @@ namespace ApiFacade.Parser
             var root = (CompilationUnitSyntax)syntaxTree.GetRoot();
             var walker = new FacadeClassWalker();
             walker.Visit(root);
+            if (walker.IsInterface) return null;
             return new FacadeClass
             {
                 Type = ParseFacadeType(walker.ClassModifers[0]),
