@@ -114,9 +114,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Writer\FacadeMethodWriter.cs" />
-    <Compile Include="Writer\FacadeStaticMethodWriter.cs" />
-    <Compile Include="Writer\FacadeWriter.cs" />
+    <Compile Include="Writer\FacadeAbstractClassWriter.cs" />
+    <Compile Include="Writer\FacadeSealedClassWriter.cs" />
+    <Compile Include="Writer\Method\FacadeAbstractMethodWriter.cs" />
+    <Compile Include="Writer\Method\FacadeConstructorWriter.cs" />
+    <Compile Include="Writer\Method\FacadeMethodWriter.cs" />
+    <Compile Include="Writer\Method\FacadeNormalMethodWriter.cs" />
+    <Compile Include="Writer\Method\FacadeStaticMethodWriter.cs" />
+    <Compile Include="Writer\FacadeClassWriter.cs" />
     <Compile Include="Parser\FacadeClass.cs" />
     <Compile Include="Parser\FacadeClassWalker.cs" />
     <Compile Include="Parser\FacadeMethod.cs" />
@@ -124,11 +129,12 @@
     <Compile Include="Parser\FacadeParameter.cs" />
     <Compile Include="Parser\FacadeProperty.cs" />
     <Compile Include="Writer\FacadeStaticClassWriter.cs" />
-    <Compile Include="Parser\FacadeStringWriter.cs" />
+    <Compile Include="Writer\FacadeStringWriter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Writer\MethodModifierType.cs" />
-    <Compile Include="Writer\MethodWriterType.cs" />
+    <Compile Include="Writer\Method\FacadeVirtualMethodWriter.cs" />
+    <Compile Include="Writer\Method\MethodModifierType.cs" />
+    <Compile Include="Writer\Method\MethodWriterType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

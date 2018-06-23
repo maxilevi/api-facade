@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using ApiFacade.Parser;
 
-namespace ApiFacade.Writer
+namespace ApiFacade.Writer.Method
 {
     public abstract class FacadeMethodWriter
     {
@@ -21,27 +21,25 @@ namespace ApiFacade.Writer
             {
                 Writer.AppendLine(string.Empty);
                 Writer.AppendLine("{");
-                Writer.IndentationLevel++; 
-                Writer.AppendLine($"{(Method.ReturnType.ToLowerInvariant() != "void" ? "return " : string.Empty)}{Body}");
+                Writer.IndentationLevel++;
+                if(!string.IsNullOrEmpty(this.Body)) Writer.AppendLine($"{(Method.ReturnType.ToLowerInvariant() != "void" ? "return " : string.Empty)}{Body}");
                 Writer.IndentationLevel--;
                 Writer.AppendLine("}");
-            }
-            else
-            {
-                Writer.AppendLine(";");
             }
         }
 
         protected string ParametersDeclaration =>
-            Method.Parameters.Length > 0 ? Method.Parameters.Select(P => $"{P.Type} {P.Name}").Aggregate((P0, P1) => $"{P0}, {P1}, ").TrimEnd(new []{',',' '}) : string.Empty;
+            Method.Parameters.Length > 0 ? Method.Parameters.Select(P => $"{P.Type} {P.Name}").Aggregate((P0, P1) => $"{P0}, {P1}") : string.Empty;
 
         protected string Parameters =>
-           Method.Parameters.Length > 0 ? Method.Parameters.Select(P => $"{P.Name}").Aggregate((P0, P1) => $"{P0}, {P1}, ").TrimEnd(new[] { ',', ' ' }) : string.Empty;
+           Method.Parameters.Length > 0 ? Method.Parameters.Select(P => $"{P.Name}").Aggregate((P0, P1) => $"{P0}, {P1}") : string.Empty;
 
         protected abstract string Declaration { get; }
 
         protected abstract string Body { get; }
 
         protected virtual bool IsDeclared => true;
+
+        protected string Parent => Class.Type == FacadeType.Sealed ? "Parent" : "base";
     }
 }

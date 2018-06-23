@@ -2,7 +2,7 @@
 
 namespace ApiFacade.Writer
 {
-    public class FacadeStaticClassWriter : FacadeWriter
+    public class FacadeStaticClassWriter : FacadeClassWriter
     {
         public FacadeStaticClassWriter(FacadeClass Class) : base(Class)
         {

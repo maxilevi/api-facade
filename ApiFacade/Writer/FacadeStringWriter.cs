@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace ApiFacade.Parser
+namespace ApiFacade.Writer
 {
     public class FacadeStringWriter
     {
@@ -16,7 +16,7 @@ namespace ApiFacade.Parser
 
         public void Append(string Text)
         {
-            _builder.Append($"{this.CreateIndentationString()}{Text}");
+            _builder.Append($"{(Text != Environment.NewLine ? this.CreateIndentationString() : string.Empty)}{Text}");
         }
 
         public void AppendLine(string Text)

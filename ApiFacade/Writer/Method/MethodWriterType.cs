@@ -1,4 +1,4 @@
-﻿namespace ApiFacade.Writer
+﻿namespace ApiFacade.Writer.Method
 {
     public enum MethodWriterType
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ApiFacade.Writer;
+using ApiFacade.Writer.Method;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,6 +17,7 @@ namespace ApiFacade.Parser
         public List<string> DeclaredNamespaces { get; }
         public List<string[]> ClassModifers { get; }
         public List<FacadeMethod> Methods { get; }
+        public List<FacadeMethod> Constructors { get; }
 
         public FacadeClassWalker()
         {
@@ -24,6 +26,15 @@ namespace ApiFacade.Parser
             DeclaredNamespaces = new List<string>();
             Usings = new List<string>();
             Methods = new List<FacadeMethod>();
+            Constructors = new List<FacadeMethod>();
+        }
+
+        public override void VisitConstructorDeclaration(ConstructorDeclarationSyntax Node)
+        {
+            base.VisitConstructorDeclaration(Node);
+            Constructors.Add(
+                this.ParseMethod(Node.Identifier, null, Node.Modifiers, Node.ParameterList)
+            );
         }
 
         public override void VisitUsingDirective(UsingDirectiveSyntax Node)
@@ -48,25 +59,31 @@ namespace ApiFacade.Parser
         public override void VisitMethodDeclaration(MethodDeclarationSyntax Node)
         {
             base.VisitMethodDeclaration(Node);
-            if(Node.Modifiers.Any(M => M.ToString() == "private")) return;
+            if (Node.Modifiers.Any(M => M.ToString() == "private")) return;
+            Methods.Add(
+                this.ParseMethod(Node.Identifier, Node.ReturnType, Node.Modifiers, Node.ParameterList)
+            );
+        }
 
+        public FacadeMethod ParseMethod(SyntaxToken Identifier, TypeSyntax ReturnType, SyntaxTokenList Modifiers, ParameterListSyntax Parameters)
+        {
             var parameters = new List<FacadeParameter>();
-            for (var i = 0; i < Node.ParameterList.Parameters.Count; i++)
+            for (var i = 0; i < Parameters.Parameters.Count; i++)
             {
                 parameters.Add(new FacadeParameter
                 {
-                    Type = Node.ParameterList.Parameters[i].Type.ToString(),
-                    Name = Node.ParameterList.Parameters[i].Identifier.ToString()
+                    Type = Parameters.Parameters[i].Type.ToString(),
+                    Name = Parameters.Parameters[i].Identifier.ToString()
                 });
             }
-            Methods.Add(new FacadeMethod
+            return new FacadeMethod
             {
                 Parameters = parameters.ToArray(),
-                Name = Node.Identifier.ToString(),
-                ReturnType = Node.ReturnType.ToString(),
-                Type = ParseType(Node.Modifiers),
-                Modifier = ParseModifier(Node.Modifiers)
-            });
+                Name = Identifier.ToString(),
+                ReturnType = ReturnType?.ToString() ?? string.Empty,
+                Type = ParseType(Modifiers),
+                Modifier = ParseModifier(Modifiers)
+            };
         }
 
         private static MethodModifierType ParseModifier(SyntaxTokenList Modifiers)
