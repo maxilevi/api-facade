@@ -73,7 +73,8 @@ namespace ApiFacade.Parser
                 parameters.Add(new FacadeParameter
                 {
                     Type = Parameters.Parameters[i].Type.ToString(),
-                    Name = Parameters.Parameters[i].Identifier.ToString()
+                    Name = Parameters.Parameters[i].Identifier.ToString(),
+                    Modifier = ParseParameterModifier(Parameters.Parameters[i].Modifiers)
                 });
             }
             return new FacadeMethod
@@ -84,6 +85,12 @@ namespace ApiFacade.Parser
                 Type = ParseType(Modifiers),
                 Modifier = ParseModifier(Modifiers)
             };
+        }
+
+        private static ParameterModifier ParseParameterModifier(SyntaxTokenList Modifiers)
+        {
+            return Modifiers.Any(M => M.ToString().ToLowerInvariant() == "out") ? ParameterModifier.Out
+                : Modifiers.Any(M => M.ToString().ToLowerInvariant() == "ref") ? ParameterModifier.Ref : ParameterModifier.None;
         }
 
         private static MethodModifierType ParseModifier(SyntaxTokenList Modifiers)

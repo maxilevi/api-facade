@@ -90,18 +90,21 @@ namespace ApiFacade.Writer
 
         protected virtual void DefineConstructor()
         {
-            if(Class.Contructor == null || Class.Type == FacadeType.Static) return;
-            var methodWriter = new FacadeConstructorWriter(Class, Class.Contructor);
-            methodWriter.Write(Writer);
-            Writer.AppendLine(string.Empty);
+            if(Class.Type == FacadeType.Static) return;
+            for (var i = 0; i < Class.Constructors.Length; i++)
+            {
+                this.AppendFunctionComments();
+                var methodWriter = new FacadeConstructorWriter(Class, Class.Constructors[i]);
+                methodWriter.Write(Writer);
+                Writer.AppendLine(string.Empty);
+            }
         }
 
         protected virtual void DefineMethods()
         {
             for (var i = 0; i < Class.Methods.Length; i++)
             {
-                var methodWriter = (FacadeMethodWriter) Activator.CreateInstance(MethodWriters[Class.Methods[i].Type],
-                    new object[]{Class, Class.Methods[i]});
+                var methodWriter = (FacadeMethodWriter) Activator.CreateInstance(MethodWriters[Class.Methods[i].Type], Class, Class.Methods[i]);
                 this.AppendFunctionComments();
                 methodWriter.Write(Writer);
                 if(i < Class.Methods.Length-1) Writer.AppendLine(string.Empty);

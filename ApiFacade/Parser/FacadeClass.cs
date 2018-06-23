@@ -12,12 +12,17 @@ namespace ApiFacade.Parser
         public string[] Usings { get; private set; }
         public string ClassModifier { get; private set; }
         public FacadeMethod[] Methods { get; private set; }
-        public FacadeMethod Contructor { get; private set; }
+        public FacadeMethod[] Constructors { get; private set; }
         public FacadeProperty[] Properties { get; private set; }
         public FacadeType Type { get; private set; }
         public string ParentNamespace { get; private set; }
 
         public static FacadeClass Build(string SourceCode)
+        {
+            return FacadeClass.Build(SourceCode, ConfigurationClass.Default);
+        }
+
+        public static FacadeClass Build(string SourceCode, ConfigurationClass Class)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(SourceCode);
             var root = (CompilationUnitSyntax)syntaxTree.GetRoot();
@@ -30,8 +35,11 @@ namespace ApiFacade.Parser
                 Usings = walker.Usings.OrderBy(S => S.Length).ThenBy(S => S).ToArray(),
                 ParentNamespace = walker.DeclaredNamespaces[0],
                 ClassModifier = walker.ClassModifers[0].Aggregate((S0,S1) => $"{S0} {S1} ").TrimEnd(' '),
-                Methods = walker.Methods.OrderBy(S => S.Name).ToArray(),
-                Contructor = walker.Constructors.Count > 0 ? walker.Constructors[0] : null
+                Methods = walker.Methods
+                    .Where(M => Class.ExcludedMethods == null || Class.ExcludedMethods != null && !Class.ExcludedMethods.Contains(M.Name))
+                    .Where(M => Class.IncludedMethods == null || Class.IncludedMethods != null && Class.IncludedMethods.Contains(M.Name))
+                    .OrderBy(S => S.Name).ToArray(),
+                Constructors = walker.Constructors.ToArray()
             };
         }
 

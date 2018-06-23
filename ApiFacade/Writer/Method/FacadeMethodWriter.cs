@@ -29,10 +29,10 @@ namespace ApiFacade.Writer.Method
         }
 
         protected string ParametersDeclaration =>
-            Method.Parameters.Length > 0 ? Method.Parameters.Select(P => $"{P.Type} {P.Name}").Aggregate((P0, P1) => $"{P0}, {P1}") : string.Empty;
+            Method.Parameters.Length > 0 ? Method.Parameters.Select(P => $"{P.Type} {P.ModifierString}{P.Name}").Aggregate((P0, P1) => $"{P0}, {P1}") : string.Empty;
 
         protected string Parameters =>
-           Method.Parameters.Length > 0 ? Method.Parameters.Select(P => $"{P.Name}").Aggregate((P0, P1) => $"{P0}, {P1}") : string.Empty;
+           Method.Parameters.Length > 0 ? Method.Parameters.Select(P => $"{P.ModifierString}{P.Name}").Aggregate((P0, P1) => $"{P0}, {P1}") : string.Empty;
 
         protected abstract string Declaration { get; }
 
