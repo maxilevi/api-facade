@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace ApiFacade.Builder
+namespace ApiFacade.Parser
 {
     public class FacadeClass
     {
@@ -27,8 +28,9 @@ namespace ApiFacade.Builder
             {
                 Type = ParseFacadeType(walker.ClassModifers[0]),
                 Name = walker.ClassNames[0],
-                Usings = new [] { walker.DeclaredNamespaces[0] },
-                ClassModifier = walker.ClassModifers[0].Aggregate((S0,S1) => $"{S0} {S1} ").TrimEnd(' ')
+                Usings = FacadeClass.Combine<string>(walker.Usings.ToArray(), new []{walker.DeclaredNamespaces[0]}),
+                ClassModifier = walker.ClassModifers[0].Aggregate((S0,S1) => $"{S0} {S1} ").TrimEnd(' '),
+                Methods = walker.Methods.ToArray()
             };
         }
 
@@ -40,6 +42,8 @@ namespace ApiFacade.Builder
         }
 
         private FacadeClass() { }
+
+        private static T[] Combine<T>(params IEnumerable<T>[] Items) => Items.SelectMany(I => I).Distinct().ToArray();
     }
 
     public enum FacadeType

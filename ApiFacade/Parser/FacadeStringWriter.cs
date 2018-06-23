@@ -1,14 +1,14 @@
 using System;
 using System.Text;
 
-namespace ApiFacade.Builder
+namespace ApiFacade.Parser
 {
-    public class FacadeStringBuilder
+    public class FacadeStringWriter
     {
         private readonly StringBuilder _builder;
         private readonly StringBuilder _indentationBuilder;
 
-        public FacadeStringBuilder()
+        public FacadeStringWriter()
         {
             _builder = new StringBuilder();
             _indentationBuilder = new StringBuilder();

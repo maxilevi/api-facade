@@ -114,16 +114,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builder\FacadeBuilder.cs" />
-    <Compile Include="Builder\FacadeClass.cs" />
-    <Compile Include="Builder\FacadeClassWalker.cs" />
-    <Compile Include="Builder\FacadeMethod.cs" />
-    <Compile Include="Builder\FacadeNormalClassBuilder.cs" />
-    <Compile Include="Builder\FacadeProperty.cs" />
-    <Compile Include="Builder\FacadeStaticClassBuilder.cs" />
-    <Compile Include="Builder\FacadeStringBuilder.cs" />
+    <Compile Include="Writer\FacadeMethodWriter.cs" />
+    <Compile Include="Writer\FacadeStaticMethodWriter.cs" />
+    <Compile Include="Writer\FacadeWriter.cs" />
+    <Compile Include="Parser\FacadeClass.cs" />
+    <Compile Include="Parser\FacadeClassWalker.cs" />
+    <Compile Include="Parser\FacadeMethod.cs" />
+    <Compile Include="Writer\FacadeNormalClassWriter.cs" />
+    <Compile Include="Parser\FacadeParameter.cs" />
+    <Compile Include="Parser\FacadeProperty.cs" />
+    <Compile Include="Writer\FacadeStaticClassWriter.cs" />
+    <Compile Include="Parser\FacadeStringWriter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Writer\MethodModifierType.cs" />
+    <Compile Include="Writer\MethodWriterType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

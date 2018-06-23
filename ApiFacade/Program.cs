@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using ApiFacade.Builder;
+using ApiFacade.Parser;
+using ApiFacade.Writer;
 
 namespace ApiFacade
 {
@@ -10,21 +11,21 @@ namespace ApiFacade
         {
             FacadeClass.Namespace = "Hedra.Engine.API";
             var facadeClass = FacadeClass.Build(File.ReadAllText("World.cs"));
-            FacadeBuilder builder = null;
+            FacadeWriter writer = null;
             switch (facadeClass.Type)
             {
                 case FacadeType.Normal:
-                    builder = new FacadeNormalClassBuilder(facadeClass);
+                    writer = new FacadeNormalClassWriter(facadeClass);
                     break;
                 case FacadeType.Static:
-                    builder = new FacadeStaticClassBuilder(facadeClass);
+                    writer = new FacadeStaticClassWriter(facadeClass);
                     break;
                 case FacadeType.Sealed:
-                    throw new ArgumentOutOfRangeException($"api-façade doesnt support sealed classes.");
+                    throw new ArgumentOutOfRangeException($"api-façade doesn't support sealed classes.");
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            File.WriteAllText("API.World.cs", builder.Build());
+            File.WriteAllText("API.World.cs", writer.Build());
         }
     }
 }
