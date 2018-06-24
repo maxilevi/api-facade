@@ -24,8 +24,9 @@ namespace ApiFacade.Writer.Method
                 Writer.IndentationLevel++;
                 if(!string.IsNullOrEmpty(this.Body)) Writer.AppendLine($"{(Method.ReturnType.ToLowerInvariant() != "void" ? "return " : string.Empty)}{Body}");
                 Writer.IndentationLevel--;
-                Writer.AppendLine("}");
+                Writer.Append("}");
             }
+            Writer.AppendLine(string.Empty);
         }
 
         protected string ParametersDeclaration =>

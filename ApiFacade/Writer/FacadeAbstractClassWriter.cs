@@ -8,6 +8,6 @@ namespace ApiFacade.Writer
         {
         }
 
-        protected override string ClassDeclaration => $"public static class {Class.Name} : {FacadeClass.ParentNamespaceName}.{Class.Name}";
+        protected override string ClassDeclaration => $"public abstract class {Class.Name} : {FacadeClass.ParentNamespaceName}.{Class.Name}";
     }
 }

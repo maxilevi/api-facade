@@ -30,9 +30,6 @@ namespace ApiFacade
         public string[] IncludedMethods { get; set; }
         public string[] ExcludedMethods { get; set; }
 
-        public bool IncludeAll => (IncludedMethods?.First() ?? string.Empty) == "*";
-        public bool ExcludeAll => (IncludedMethods?.First() ?? string.Empty) == "*";
-
         public static ConfigurationClass Default { get; set; } = new ConfigurationClass();
     }
 

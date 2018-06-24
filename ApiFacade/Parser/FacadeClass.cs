@@ -47,8 +47,8 @@ namespace ApiFacade.Parser
         private static FacadeType ParseFacadeType(string[] ClassModifiers)
         {
             return ClassModifiers.Any(S => S.ToString() == "static") ? FacadeType.Static 
-                : ClassModifiers.Any(S => S.ToString() == "sealed") 
-                ? FacadeType.Sealed : FacadeType.Normal;
+                : ClassModifiers.Any(S => S.ToString() == "sealed") ? FacadeType.Sealed :
+                ClassModifiers.Any(S => S.ToString() == "abstract") ? FacadeType.Abstract : FacadeType.Normal;
         }
 
         private FacadeClass() { }
