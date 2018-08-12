@@ -17,12 +17,7 @@ namespace ApiFacade.Parser
         public FacadeType Type { get; private set; }
         public string ParentNamespace { get; private set; }
 
-        public static FacadeClass Build(string SourceCode)
-        {
-            return FacadeClass.Build(SourceCode, ConfigurationClass.Default);
-        }
-
-        public static FacadeClass Build(string SourceCode, ConfigurationClass Class)
+        public static FacadeClass Build(string SourceCode, Configuration Class)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(SourceCode);
             var root = (CompilationUnitSyntax)syntaxTree.GetRoot();
